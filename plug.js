@@ -72,7 +72,7 @@ function onTask (name) {
 function onWatch (fileName, taskName) {
   fs.watchFile(fileName, (event, filename) => {
     if (filename) {
-      tasks[taskName]();
+      runTask(taskName);
     }
   });
 }
