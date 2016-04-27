@@ -1,10 +1,48 @@
-var plug = {
+const fs = require('fs');
+const stream = require('stream');
+
+const plug = {
+  dest: onDest,
+  src: onSrc,
   task: onTask
 };
 
 module.exports = plug;
 
 var tasks = {};
+
+function onDest (path) {
+  var writer = new stream.Writable({
+    write: (chunk, encoding, next) => {
+      if (!fs.existsSync(path)) fs.mkdirSync(path);
+
+      fs.writeFile(path + '/' + chunk.name + chunk.buffer, e => {
+        next();
+      });
+    },
+    objectMode: true
+  });
+
+  return writer;
+}
+
+function onSrc (path) {
+  var src = new stream.Readable({
+    read: chunk => {},
+    objectMode: true
+  });
+
+  fs.readFile(path, 'utf8', (err, data) => {
+    src.push({
+      name: path,
+      buffer: data
+    });
+
+    src.push(null);
+  });
+
+  return src;
+}
 
 function onTask (name) {
   // register tasks and subtasks
