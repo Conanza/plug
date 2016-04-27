@@ -1,5 +1,6 @@
 const fs = require('fs');
 const stream = require('stream');
+const vfs = require('vinyl-fs');
 
 const plug = {
   dest: onDest,
@@ -12,36 +13,42 @@ module.exports = plug;
 var tasks = {};
 
 function onDest (path) {
-  var writer = new stream.Writable({
-    write: (chunk, encoding, next) => {
-      if (!fs.existsSync(path)) fs.mkdirSync(path);
+  // var writer = new stream.Writable({
+  //   write: (chunk, encoding, next) => {
+  //     if (!fs.existsSync(path)) fs.mkdirSync(path);
+  //
+  //     fs.writeFile(path + '/' + chunk.name + chunk.buffer, e => {
+  //       next();
+  //     });
+  //   },
+  //   objectMode: true
+  // });
+  //
+  // return writer;
 
-      fs.writeFile(path + '/' + chunk.name + chunk.buffer, e => {
-        next();
-      });
-    },
-    objectMode: true
-  });
-
-  return writer;
+  // using vinyl-fs
+  return vfs.dest(path);
 }
 
-function onSrc (path) {
-  var src = new stream.Readable({
-    read: chunk => {},
-    objectMode: true
-  });
+function onSrc (filename) {
+  // var src = new stream.Readable({
+  //   read: chunk => {},
+  //   objectMode: true
+  // });
+  //
+  // fs.readFile(filename, 'utf8', (err, data) => {
+  //   src.push({
+  //     name: filename,
+  //     buffer: data
+  //   });
+  //
+  //   src.push(null);
+  // });
+  //
+  // return src;
 
-  fs.readFile(path, 'utf8', (err, data) => {
-    src.push({
-      name: path,
-      buffer: data
-    });
-
-    src.push(null);
-  });
-
-  return src;
+  // using vinyl-fs
+  return vfs.src(filename);
 }
 
 function onTask (name) {
