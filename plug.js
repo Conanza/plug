@@ -5,7 +5,8 @@ const vfs = require('vinyl-fs');
 const plug = {
   dest: onDest,
   src: onSrc,
-  task: onTask
+  task: onTask,
+  watch: onWatch
 };
 
 module.exports = plug;
@@ -66,6 +67,14 @@ function onTask (name) {
   } else {
     console.log('Invalid task registration');
   }
+}
+
+function onWatch (fileName, taskName) {
+  fs.watchFile(fileName, (event, filename) => {
+    if (filename) {
+      tasks[taskName]();
+    }
+  });
 }
 
 function runTask (name) {

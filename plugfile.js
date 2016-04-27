@@ -15,3 +15,5 @@ plug.task('test', ['subTask1', 'subTask2'], () => {
 plug.task('readwrite', () => {
   plug.src('test.txt').pipe(plug.dest('tmp'));
 });
+
+plug.watch('test.txt', 'test');
