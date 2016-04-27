@@ -14,6 +14,8 @@ plug.task('test', ['subTask1', 'subTask2'], () => {
 });
 
 plug.task('readwrite', () => {
+  console.log('writing to tmp!');
+  
   return plug
     .src('test.txt')
     .pipe(rename('renamed.txt'))
