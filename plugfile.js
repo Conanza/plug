@@ -28,20 +28,12 @@ plug.task('readwrite', () => {
     .pipe(plug.dest('tmp'));
 });
 
-plug.task(
-  'test-parallel',
-  plug.parallel(['subTask1', 'subTask2']),
-  () => {
-    console.log('done');
-  }
-);
+plug.task('test-parallel', plug.parallel(['subTask1', 'subTask2']), () => {
+  console.log('done');
+});
 
-plug.task(
-  'test-series',
-  plug.series(['subTask1', 'subTask2']),
-  () => {
-    console.log('done');
-  }
-);
+plug.task('test-series', plug.series(['subTask1', 'subTask2']), () => {
+  console.log('done');
+});
 
 plug.watch('test.txt', 'readwrite');
