@@ -1,5 +1,13 @@
 var plug = require('./plug');
 
-plug.task('test', () => {
+plug.task('subTask1', () => {
+  console.log('from sub task 1');
+});
+
+plug.task('subTask2', () => {
+  console.log('from sub task 2');
+});
+
+plug.task('test', ['subTask1', 'subTask2'], () => {
   console.log('hello plug');
 });
