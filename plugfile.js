@@ -1,4 +1,5 @@
 var plug = require('./plug');
+var rename = require('gulp-rename');
 
 plug.task('subTask1', () => {
   console.log('from sub task 1');
@@ -13,7 +14,10 @@ plug.task('test', ['subTask1', 'subTask2'], () => {
 });
 
 plug.task('readwrite', () => {
-  plug.src('test.txt').pipe(plug.dest('tmp'));
+  return plug
+    .src('test.txt')
+    .pipe(rename('renamed.txt'))
+    .pipe(plug.dest('tmp'));
 });
 
-plug.watch('test.txt', 'test');
+plug.watch('test.txt', 'readwrite');
